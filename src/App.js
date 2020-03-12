@@ -6,7 +6,7 @@ const GAME_TITLE = "tic-tac-toe";
 
 
 function Field(props) {
-  const disableIfInUse = (props.value != null) ? "disabled" : "";
+  const disableIfInUse = (props.value != null || props.inactive) ? "disabled" : "";
   return (
     <button className="field" onClick={props.onClick} disabled={disableIfInUse}>
       {props.value}
@@ -90,6 +90,7 @@ class App extends Component {
       <Field 
         value={this.state.gameStatus[rowIndex][fieldIndex]}
         onClick={() => this.handleClick(rowIndex, fieldIndex)}
+        inactive={this.state.gameOver}
       />
     )
   }
