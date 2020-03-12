@@ -6,8 +6,10 @@ const GAME_TITLE = "tic-tac-toe";
 
 
 function Field(props) {
+  const disableIfInUse = (props.value != null || props.inactive) ? "disabled" : "";
+  const classes = (props.isWinningField ? "field winning" : "field");
   return (
-    <button className="field" onClick={props.onClick}>
+    <button className={classes} onClick={props.onClick} disabled={disableIfInUse}>
       {props.value}
     </button>
   )
@@ -46,6 +48,8 @@ class App extends Component {
         ],
       gameOver: false,
       winner: null,
+      winAxis: null,
+      winIndex: null,
     });
   }
 
@@ -89,8 +93,41 @@ class App extends Component {
       <Field 
         value={this.state.gameStatus[rowIndex][fieldIndex]}
         onClick={() => this.handleClick(rowIndex, fieldIndex)}
+        inactive={this.state.gameOver}
+        isWinningField={this.isWinningField(rowIndex, fieldIndex)}
       />
     )
+  }
+
+  isWinningField = (rowIndex, fieldIndex) => {
+    // Can only be a winning field if the game is and won
+    if (this.state.gameOver === false && this.state.winner != null){
+      return false;
+    }
+    const winAxis = this.state.winAxis;
+    const winIndex = this.state.winIndex;
+    // Check rows
+    if (winAxis === "row" && winIndex === rowIndex){
+      return true;
+    }
+    // Check columns
+    if (winAxis === "col" && winIndex === fieldIndex){
+      return true;
+    }
+    // Check diagonals
+    if (winAxis === "diag"){
+      const fieldCoord = String(rowIndex) + String(fieldIndex)
+      const downDiagCoords = ["00", "11", "22"]
+      const upDiagCoords = ["20", "11", "02"]
+      if (winIndex === "down" && downDiagCoords.includes(fieldCoord)) {
+        return true;
+      } 
+      if (winIndex === "up" && upDiagCoords.includes(fieldCoord)) {
+        return true;
+      }
+    }
+    // Not a winning field
+    return false;
   }
 
   handleClick = (rowIndex, fieldIndex) => {
@@ -130,16 +167,28 @@ class App extends Component {
     if (winRow !== null) {
       console.log("Winning row found: " + winRow);
       won = true;
+      this.setState({
+        winAxis: "row",
+        winIndex: winRow,
+      });
     } 
     const winCol = this.checkWinColumns()
     if (winCol !== null) {
       console.log("Winning column found: " + winCol)
       won = true;
+      this.setState({
+        winAxis: "col",
+        winIndex: winCol,
+      });
     }
     const winDiag = this.checkWinDiagonals()
     if (winDiag != null) {
       console.log("Winning diagonal found: " + winDiag);
       won = true;
+      this.setState({
+        winAxis: "diag",
+        winIndex: winDiag,
+      });
     }
     if (won) {
       console.log("Winner is: " + this.state.activePlayer);
@@ -202,7 +251,7 @@ class App extends Component {
       this.state.gameStatus[0][2],
     ]
     if (this.checkWinDiag(upDiag)) {
-      return "up"
+      return "up";
     }
     return null;
   }
@@ -222,7 +271,7 @@ class App extends Component {
     this.setState({
       gameOver: true,
       winner: this.state.activePlayer,
-    })
+    });
   }
 
   allFieldsFilled = () => {

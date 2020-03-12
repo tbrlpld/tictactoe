@@ -42,7 +42,7 @@
 }
 
 .win-msg {
-  background-color: limegreen;
+  background-color: gold;
   color: white;
 }
 
@@ -83,6 +83,10 @@
 
 .field:disabled {
   color: inherit;
+}
+
+.field.winning {
+  background-color: gold;
 }
 
 .field-row:first-of-type > .field {
