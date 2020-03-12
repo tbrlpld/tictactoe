@@ -6,8 +6,9 @@ const GAME_TITLE = "tic-tac-toe";
 
 
 function Field(props) {
+  const disableIfInUse = (props.value != null) ? "disabled" : "";
   return (
-    <button className="field" onClick={props.onClick}>
+    <button className="field" onClick={props.onClick} disabled={disableIfInUse}>
       {props.value}
     </button>
   )
