@@ -30,5 +30,8 @@ RUN npm install
 
 # Copy app
 COPY . /app 
-
-
+# Build app
+RUN npm run build
+# Serve the app
+ENTRYPOINT serve -s build -l 3000
+EXPOSE 3000
