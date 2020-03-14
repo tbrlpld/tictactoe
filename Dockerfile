@@ -24,5 +24,11 @@ WORKDIR /app
 # Switch to none root account
 USER docker
 
+# Copy dependencies list and install
+COPY package.json /app
+RUN npm install
+
+# Copy app
+COPY . /app 
 
 
