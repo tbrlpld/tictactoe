@@ -57,7 +57,7 @@ class App extends Component {
     if (!this.state.gameOver) {
       const playerXClasses = (this.state.activePlayer === "X") ? "player active-player" : "player";
       const playerOClasses = (this.state.activePlayer === "O") ? "player active-player" : "player";
-      
+
       const playerXElement = (<div className={playerXClasses}>Player X</div>);
       const playerOElement = (<div className={playerOClasses}>Player O</div>);
 
@@ -67,7 +67,7 @@ class App extends Component {
           {playerOElement}
         </div>
       );
-    } 
+    }
     if (this.state.winner !== null) {
       return (
         <div className="header flex-justify-center">
@@ -77,7 +77,7 @@ class App extends Component {
         </div>
       );
     } else {
-      return ( 
+      return (
         <div className="header flex-justify-center">
           <div className="player draw-msg">
             Draw!
@@ -90,7 +90,7 @@ class App extends Component {
 
   drawField = (rowIndex, fieldIndex, value) => {
     return (
-      <Field 
+      <Field
         value={this.state.gameStatus[rowIndex][fieldIndex]}
         onClick={() => this.handleClick(rowIndex, fieldIndex)}
         inactive={this.state.gameOver}
@@ -121,7 +121,7 @@ class App extends Component {
       const upDiagCoords = ["20", "11", "02"]
       if (winIndex === "down" && downDiagCoords.includes(fieldCoord)) {
         return true;
-      } 
+      }
       if (winIndex === "up" && upDiagCoords.includes(fieldCoord)) {
         return true;
       }
@@ -133,7 +133,7 @@ class App extends Component {
   handleClick = (rowIndex, fieldIndex) => {
     let gameStatus = this.state.gameStatus.slice();
 
-    // Check game not over and field is not filled yet 
+    // Check game not over and field is not filled yet
     if (this.state.gameOver || gameStatus[rowIndex][fieldIndex] !== null) {
       return;
     }
@@ -171,7 +171,7 @@ class App extends Component {
         winAxis: "row",
         winIndex: winRow,
       });
-    } 
+    }
     const winCol = this.checkWinColumns()
     if (winCol !== null) {
       console.log("Winning column found: " + winCol)
@@ -295,7 +295,7 @@ class App extends Component {
   drawRestartButton = () => {
     if (this.state.gameOver === true) {
       return (<button className="reset-button" onClick={() => this.resetGame()}>Play again!</button>);
-    } 
+    }
   }
 
   // TODO: Highlight winning fields
